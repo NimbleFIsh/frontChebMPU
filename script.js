@@ -31,14 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map); // Задание слоя маски - обычный
     map.on('contextmenu', () => null); // Отключение стандартного контекстного меню браузера
 
-    const setMarker = (coords, content, icon=markersParh + marker, size, callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
+    const setMarker = (coords, icon=markersParh + marker, size, callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
 
     const contextMenu = e => {
         removeContextPin(); // Удаление точки пользователя
         
         coords = e.latlng; // Дамп координат
         
-        setMarker(e.latlng, 'Ваша точка', markersParh + userMarker, [25, 40]); // Установка точки пользователя
+        setMarker(e.latlng, markersParh + userMarker, [25, 40]); // Установка точки пользователя
         
         document.getElementById('attention').innerHTML = '<span id="unselectPin">Убрать маркер</span>'; // Рендер отмены выбора точки
         document.getElementById('unselectPin').addEventListener('click', () => { // Обработчик отмены выбора точки

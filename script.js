@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                 else alert('Пожалуйста заполните все поля и поставте точку на карте');
                 coords = []; // Сброс координат
-                document.getElementById('openForm').classList.add('show'); // Показываем кнопку
+                document.getElementById('openForm').classList.remove('hide'); // Показываем кнопку
             });
         }
     }

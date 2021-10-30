@@ -5,7 +5,7 @@ const userMarker = 'pin.svg';
 
 function sendReq(method, mode, callback, postData = '', id) { // Функция для стандартного сетевого взаимодействия
     const xhr = new XMLHttpRequest();
-    xhr.open(method, SERVERHOST + mode + (mode === 'points') ? '?category=' + id : '', true);
+    xhr.open(method, SERVERHOST + mode + (mode === 'points' ? '?category=' + id : ''), true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.addEventListener('readystatechange', () => xhr.readyState === xhr.DONE && callback(mode === 'requestsText' ? xhr.response : JSON.parse(xhr.response)));
     xhr.send(JSON.stringify(postData));
@@ -16,23 +16,11 @@ const removeContextPin = () => getMarkers().forEach(img => img.src.includes(user
 const clearMarkers = () => getMarkers().forEach(el => el.remove());
 
 function createCategory(element) {
-    const div = document.createElement('div');
-    const label = document.createElement('label');
-    const radio = document.createElement('input');
-    label.innerText = element.name;
-    radio.type = 'radio';
-    radio.name = 'mode';
-    radio.id=element.requestId;
+    const option = document.createElement('option');
+    option.id=element.requestId;
+    option.innerText=element.name;
     // radio.dataset.color = element.color;
-    radio.addEventListener('click', e => {
-        console.log(e);
-        sendReq('GET', 'points', data => {
-            console.log(data);
-        }, null, e.target.id);
-    })
-    div.insertAdjacentElement('afterbegin', label);
-    div.insertAdjacentElement('afterbegin', radio);
-    document.getElementById('settings').insertAdjacentElement('beforeend', div);
+    document.getElementById('container').insertAdjacentElement('beforeend', option);
 }
 
 const renderForm = () => document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="form"><div id="closeForm"></div><label for="description">Укажите тему обращения</label><textarea id="description"></textarea><label for="text">Опишите вашу проблему</label><textarea id="text"></textarea><div id="attention">Укажите на карте току, нажав правой кнопкой мыши</div><div id="sendForm">Отправить</div></div>');
@@ -80,6 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderSettings = () => {
         document.body.insertAdjacentHTML('afterbegin', '<div id="container"><ul id="settings"></ul></div>');
         sendReq('GET', 'categories', data => {
+            const select = document.createElement('select');
+            select.id="modeList";
+            select.addEventListener('change', e => {
+                console.log(e);
+                sendReq('GET', 'points', data => console.log(data), null, e.target.id);
+            })
+            document.getElementById('container').insertAdjacentElement('afterbegin', select);
             data.forEach(createCategory);
             document.getElementById('settings').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>');
             document.getElementById('openForm').addEventListener('click', openForm);

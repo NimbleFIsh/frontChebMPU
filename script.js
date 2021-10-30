@@ -70,10 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sendReq('GET', 'categories', data => {
             const select = document.createElement('select');
             select.id="modeList";
-            select.addEventListener('change', e => {
-                console.log(e);
-                sendReq('GET', 'points', data => console.log(data), null, e.target.id);
-            })
+            select.addEventListener('change', e => sendReq('GET', 'points', data => console.log(data), null, e.target.selectedOptions[0].id));
             document.getElementById('container').insertAdjacentElement('afterbegin', select);
             data.forEach(createCategory);
             document.getElementById('settings').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>');

@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('sendForm').addEventListener('click', () => {
                 const description = document.getElementById('description');
                 const text = document.getElementById('text');
+                console.log(Object.keys(coords) > 0);
                 if (description.value !== '' || text.value !== '' || Object.keys(coords) > 0) alert('Пожалуйста заполните все поля и поставте точку на карте');
                 else sendReq('POST', 'createRequest', data => {
                     console.log(data);

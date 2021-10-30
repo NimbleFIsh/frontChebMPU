@@ -23,10 +23,11 @@ function createCategory(element) { // Наполняет выпадающий с
     document.getElementById('modeList').insertAdjacentElement('beforeend', option);
 }
 
-const renderForm = () => document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="form"><div id="closeForm"></div><label for="description">Укажите тему обращения</label><textarea id="description"></textarea><label for="text">Опишите вашу проблему</label><textarea id="text"></textarea><div id="attention">Укажите на карте току, нажав правой кнопкой мыши</div><div id="sendForm">Отправить</div></div>');
+const renderForm = () => document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="form"><div id="closeForm"></div><select id="selectForm"></select><label for="text">Опишите вашу проблему</label><textarea id="text"></textarea><div id="attention">Укажите на карте току, нажав правой кнопкой мыши</div><div id="sendForm">Отправить</div></div>');
 
 document.addEventListener('DOMContentLoaded', () => {
-    let coords = {}; // Дамп для координат
+    let coords = {}, // Дамп для координат
+        dataDump; // Дамп для категорий
     let map = L.map('map').setView([56.1012, 47.2261], 12); // Инициализация карты
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map); // Задание слоя маски - обычный
     map.on('contextmenu', () => null); // Отключение стандартного контекстного меню браузера
@@ -49,8 +50,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const openForm = () => { // Открытие формы
         if (!document.getElementById('form')) { // Если форма не была открыта ранее
+            let selectDump; // Дамп для выбранной id категории
             renderForm(); // Рендер формы
-
+            
+            dataDump.forEach(el => {
+                const option = document.createElement('option');
+                option.innerText = el.name;
+                option.id = el.id;
+                // option.dataset.color = el.color;
+                document.getElementById('selectForm').insertAdjacentElement('beforeend', option);
+            });
+            document.getElementById('selectForm').addEventListener('change', e => selectDump = e.target.selectedOptions[0].value);
+            selectDump = dataDump[0].name;
             document.getElementById('openForm').classList.add('hide'); // Прячем кнопку
 
             map.addEventListener('contextmenu', contextMenu); // Обработчик контекстного меню
@@ -66,8 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const description = document.getElementById('description'); // Получение полей формы для чтения их значений
                 const text = document.getElementById('text'); // Получение полей формы для чтения их значений
 
-                if (description.value !== '' && text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
-                    sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
+                if (text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
+                    sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": selectDump, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                     document.getElementById('closeForm').click(); // Закрытие формы
                     setMarker([coords.lng, coords.lat], text.value); // Добавление маркера без запроса с сервера
                     coords = {}; // Сброс координат
@@ -85,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.insertAdjacentHTML('afterbegin', '<div id="container"></div>'); // Рендер базовой структуры
 
         sendReq('GET', 'categories', data => { // Запрос категорий
+            dataDump = data;
             const select = document.createElement('select');
             select.id="modeList";
             select.addEventListener('change', e => sendReq('GET', 'points', changeCategoryRender, null, e.target.selectedOptions[0].id));
@@ -92,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('container').insertAdjacentElement('afterbegin', select); // Рендер контейнера списка категорий
             data.forEach(createCategory); // Наполнение списка категорий
 
-            sendReq('GET', 'points', changeCategoryRender, null, 1); // Запрос категории по id
+            sendReq('GET', 'points', changeCategoryRender, null, dataDump[0].id); // Запрос категории по id
 
             document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
             document.getElementById('openForm').addEventListener('click', openForm); // Добавляет обработчик открытия формы

@@ -3,9 +3,9 @@ const markersParh = './';
 const marker = 'marker.png';
 const userMarker = 'pin.svg';
 
-function sendReq(method, mode, callback, postData = '') { // Функция для стандартного сетевого взаимодействия
+function sendReq(method, mode, callback, postData = '', id) { // Функция для стандартного сетевого взаимодействия
     const xhr = new XMLHttpRequest();
-    xhr.open(method, SERVERHOST + mode, true);
+    xhr.open(method, SERVERHOST + mode + (mode === 'points') ? '?category=' + id : '', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.addEventListener('readystatechange', () => xhr.readyState === xhr.DONE && callback(mode === 'requestsText' ? xhr.response : JSON.parse(xhr.response)));
     xhr.send(JSON.stringify(postData));
@@ -19,10 +19,17 @@ function createCategory(element) {
     const div = document.createElement('div');
     const label = document.createElement('label');
     const radio = document.createElement('input');
-    div.id=element.requestId;
-    div.dataset.color = element.color;
     label.innerText = element.name;
     radio.type = 'radio';
+    radio.name = 'mode';
+    radio.id=element.requestId;
+    // radio.dataset.color = element.color;
+    radio.addEventListener('click', e => {
+        console.log(e);
+        sendReq('GET', 'points', data => {
+            console.log(data);
+        }, null, e.target.id);
+    })
     div.insertAdjacentElement('afterbegin', label);
     div.insertAdjacentElement('afterbegin', radio);
     document.getElementById('settings').insertAdjacentElement('beforeend', div);
@@ -62,10 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const description = document.getElementById('description');
                 const text = document.getElementById('text');
                 if (description.value !== '' && text.value !== '' && (coords.lng && coords.lat))
-                    sendReq('POST', 'createRequest', data => {
-                        console.log(data);
-                        if (data.id) console.log('Успешно создано!');
-                    }, { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
+                    sendReq('POST', 'createRequest', () => console.log('Успешно создано!'),
+                        { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                 else alert('Пожалуйста заполните все поля и поставте точку на карте');
                 coords = [];
             });

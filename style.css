@@ -15,7 +15,7 @@
 
 #attention > span, #openForm, #closeForm, #sendForm { cursor: pointer }
 
-#modeList {
+#modeList, #closeForm {
     margin-bottom: 15px;
 }
 
@@ -42,7 +42,7 @@ textarea {
     padding: 3px;
 }
 
-#form, #attention, #sendForm { margin-top: 15px }
+#attention, #sendForm { margin-top: 15px }
 
 textarea:focus { outline: none }
 #openForm, #attention, #sendForm {

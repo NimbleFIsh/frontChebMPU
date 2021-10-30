@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!document.getElementById('form')) { // Если форма не была открыта ранее
             renderForm(); // Рендер формы
 
-            document.getElementById('form').classList.add('hide'); // Прячем кнопку
+            document.getElementById('openForm').classList.add('hide'); // Прячем кнопку
 
             map.addEventListener('contextmenu', contextMenu); // Обработчик контекстного меню
 
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                 else alert('Пожалуйста заполните все поля и поставте точку на карте');
                 coords = []; // Сброс координат
-                document.getElementById('form').classList.add('show'); // Показываем кнопку
+                document.getElementById('openForm').classList.add('show'); // Показываем кнопку
             });
         }
     }

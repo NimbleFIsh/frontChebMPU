@@ -19,8 +19,8 @@
     margin-bottom: 15px;
 }
 
-.hide { display: 'none' ; }
-.show { display: 'block'; }
+.hide { display: none  !important; }
+.show { display: block !important; }
 
 #container {
     position: absolute;

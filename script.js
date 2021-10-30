@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.target.parentElement.remove();
                 map.removeEventListener('contextmenu', contextMenu);
                 removeContextPin(); // Удаление точки пользователя
+                document.getElementById('openForm').classList.remove('hide'); // Показываем кнопку
             });
 
             document.getElementById('sendForm').addEventListener('click', () => { // Обработчик отправки формы

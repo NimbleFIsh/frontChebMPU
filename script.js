@@ -62,8 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.dataset.color = el.color;
                 document.getElementById('selectForm').insertAdjacentElement('beforeend', option);
             });
-            // selectDump = {'name': e.target.selectedOptions[0].value}
-            document.getElementById('selectForm').addEventListener('change', e => console.log(e.target.selectedOptions[0]));
+            document.getElementById('selectForm').addEventListener('change', e => selectDump = {'name': e.target.selectedOptions[0].value,'color':e.target.selectedOptions[0].dataset.color});
             selectDump = dataDump[0];
             document.getElementById('openForm').classList.add('hide'); // Прячем кнопку
 

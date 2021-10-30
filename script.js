@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const option = document.createElement('option');
                 option.innerText = el.name;
                 option.id = el.id;
-                // option.dataset.color = el.color;
+                option.dataset.color = el.color;
                 document.getElementById('selectForm').insertAdjacentElement('beforeend', option);
             });
             document.getElementById('selectForm').addEventListener('change', e => selectDump = e.target.selectedOptions[0].value);
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": selectDump, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                     document.getElementById('closeForm').click(); // Закрытие формы
-                    setMarker([coords.lat, coords.lng],undefined, undefined, e => e.target.bindPopup(text.value)); // Добавление маркера без запроса с сервера
+                    if (document.getElementById('modeList').selectedOptions[0].value === selectDump) setMarker([coords.lat, coords.lng], undefined, undefined, e => e.target.bindPopup(text.value)); // Добавление маркера без запроса с сервера
                     coords = {}; // Сброс координат
                 } else alert('Пожалуйста заполните все поля и поставте точку на карте');
             });

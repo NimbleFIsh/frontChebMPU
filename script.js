@@ -47,15 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function renderButtonForForm() {
-        document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
-        document.getElementById('openForm').addEventListener('click', openForm); // Добавляет обработчик открытия формы
-    }
-
     const openForm = () => { // Открытие формы
         if (!document.getElementById('form')) { // Если форма не была открыта ранее
             renderForm(); // Рендер формы
-            document.getElementById('openForm').remove();
+
+            document.getElementById('form').classList.add('hide'); // Прячем кнопку
 
             map.addEventListener('contextmenu', contextMenu); // Обработчик контекстного меню
 
@@ -73,9 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                 else alert('Пожалуйста заполните все поля и поставте точку на карте');
                 coords = []; // Сброс координат
-                document.getElementById('form').addEventListener('click', openForm); // Удаляет обработчик открытия формы
-                document.getElementById('form').remove();
-                renderButtonForForm(); // Рендерит кнопку для открытия формы
+                document.getElementById('form').classList.add('show'); // Прячем кнопку
             });
         }
     }
@@ -93,7 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             sendReq('GET', 'points', data => console.log(data), null, 1); // Запрос категории по id
 
-            renderButtonForForm(); // Рендерит кнопку для открытия формы
+            document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
+            document.getElementById('openForm').addEventListener('click', openForm); // Добавляет обработчик открытия формы
         });
     }
 

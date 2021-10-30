@@ -5,9 +5,63 @@
     padding: 0;
     list-style: none;
     box-sizing: border-box;
+    cursor: default;
 }
 
 #map {
     z-index: 1;
     height: 100vh;
+}
+
+.setMarker { cursor: url('./pin.svg'), auto }
+
+#attention > span, #openForm, #closeForm { cursor: pointer }
+
+#container {
+    position: absolute;
+    width: 18vw;
+    z-index: 2;
+    background-color:rgba(138, 138, 138, 0.6);
+    padding: 15px;
+    top: 75px;
+    max-height: 80vh;
+}
+
+#container, #settings, #form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#form { width: 100% }
+
+textarea {
+    width: 100%;
+    padding: 3px;
+}
+
+#form, #attention, #sendForm { margin-top: 15px }
+
+textarea:focus { outline: none }
+#openForm, #attention, #sendForm {
+    padding: 5px 8px;
+    user-select: none;
+    background-color: #399bff;
+}
+
+#attention, #sendForm { width: fit-content }
+
+#description { resize: none }
+
+#text {
+    resize: vertical;
+    min-height: 46px;
+    max-height: 46vh;
+}
+
+#closeForm {
+    width: 20px;
+    height: 20px;
+    background-image: url('close.png');
+    background-size: 20px;
 }

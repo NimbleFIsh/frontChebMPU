@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // .bindPopup(content)
     const changeCategoryRender = data => {
         clearMarkers(); // Очистка всех маркеров с карты
-        data.forEach(el => setMarker([el.coordinate.lon, el.coordinate.lat], undefined, undefined));
+        data.forEach(el => setMarker([el.coordinate.lat, el.coordinate.lon], undefined, undefined));
     }
 
     const renderSettings = () => {

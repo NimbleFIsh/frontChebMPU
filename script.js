@@ -26,7 +26,7 @@ function createCategory(element) { // Наполняет выпадающий с
 const renderForm = () => document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="form"><div id="closeForm"></div><label for="description">Укажите тему обращения</label><textarea id="description"></textarea><label for="text">Опишите вашу проблему</label><textarea id="text"></textarea><div id="attention">Укажите на карте току, нажав правой кнопкой мыши</div><div id="sendForm">Отправить</div></div>');
 
 document.addEventListener('DOMContentLoaded', () => {
-    let coords; // Дамп для координат
+    let coords = {}; // Дамп для координат
     let map = L.map('map').setView([56.1012, 47.2261], 12); // Инициализация карты
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map); // Задание слоя маски - обычный
     map.on('contextmenu', () => null); // Отключение стандартного контекстного меню браузера
@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (description.value !== '' && text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
-                    document.getElementById('openForm').classList.remove('hide'); // Показываем кнопку
-                    coords = []; // Сброс координат
+                    document.getElementById('openForm').click(); // Закрытие формы
+                    coords = {}; // Сброс координат
                 } else alert('Пожалуйста заполните все поля и поставте точку на карте');
             });
         }

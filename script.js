@@ -5,7 +5,7 @@ const userMarker = 'pin.svg';
 
 function sendReq(method, mode, callback, postData = '', id) { // Функция для стандартного сетевого взаимодействия
     const xhr = new XMLHttpRequest();
-    xhr.open(method, SERVERHOST + mode + (mode === 'points' ? '?category=' + id : (mode === 'requestsText') ? '/'+id : ''), true);
+    xhr.open(method, SERVERHOST + mode + (mode === 'points' ? '?category=' + id : (mode === 'requestsText' ? '/'+id : '')), true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.addEventListener('readystatechange', () => xhr.readyState === xhr.DONE && callback(mode === 'requestsText' ? xhr.response : JSON.parse(xhr.response)));
     xhr.send(JSON.stringify(postData));
@@ -74,13 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             document.getElementById('sendForm').addEventListener('click', () => { // Обработчик отправки формы
-                const description = document.getElementById('description'); // Получение полей формы для чтения их значений
                 const text = document.getElementById('text'); // Получение полей формы для чтения их значений
 
                 if (text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": selectDump, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                     document.getElementById('closeForm').click(); // Закрытие формы
-                    setMarker([coords.lng, coords.lat], text.value); // Добавление маркера без запроса с сервера
+                    setMarker([coords.lat, coords.lng],undefined, undefined, e.target.bindPopup(text.value)); // Добавление маркера без запроса с сервера
                     coords = {}; // Сброс координат
                 } else alert('Пожалуйста заполните все поля и поставте точку на карте');
             });
@@ -89,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const changeCategoryRender = data => {
         clearMarkers(); // Очистка всех маркеров с карты
         data.forEach(el => setMarker([el.coordinate.lat, el.coordinate.lon], undefined, undefined, e =>
-            sendReq('GET', 'requestsText', d => e.target.bindPopup(d), undefined, el.requestId)));
+            sendReq('GET', 'requestsText', d => e.target.bindPopup(d).openPopup(), undefined, el.requestId)));
     }
 
     const renderSettings = () => {

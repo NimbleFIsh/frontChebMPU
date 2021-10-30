@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.target.parentElement.remove();
                 document.getElementById('map').classList.remove('setMarker');
                 map.removeEventListener('contextmenu', contextMenu);
+                removeContextPin();
             });
         }
     }

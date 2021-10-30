@@ -13,9 +13,7 @@
     height: 100vh;
 }
 
-.setMarker { cursor: url('./pin.svg'), auto }
-
-#attention > span, #openForm, #closeForm { cursor: pointer }
+#attention > span, #openForm, #closeForm, #sendForm { cursor: pointer }
 
 #container {
     position: absolute;

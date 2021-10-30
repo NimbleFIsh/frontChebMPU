@@ -17,10 +17,10 @@ const clearMarkers = () => getMarkers().forEach(el => el.remove());
 
 function createCategory(element) {
     const option = document.createElement('option');
-    option.id=element.requestId;
+    option.id=element.id;
     option.innerText=element.name;
     // radio.dataset.color = element.color;
-    document.getElementById('container').insertAdjacentElement('beforeend', option);
+    document.getElementById('modeList').insertAdjacentElement('beforeend', option);
 }
 
 const renderForm = () => document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="form"><div id="closeForm"></div><label for="description">Укажите тему обращения</label><textarea id="description"></textarea><label for="text">Опишите вашу проблему</label><textarea id="text"></textarea><div id="attention">Укажите на карте току, нажав правой кнопкой мыши</div><div id="sendForm">Отправить</div></div>');

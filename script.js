@@ -6,6 +6,7 @@ const userMarker = 'pin.svg';
 function sendReq(method, mode, callback, postData = '') { // Функция для стандартного сетевого взаимодействия
     const xhr = new XMLHttpRequest();
     xhr.open(method, SERVERHOST + mode, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.addEventListener('readystatechange', () => xhr.readyState === xhr.DONE && callback(mode === 'requestsText' ? xhr.response : JSON.parse(xhr.response)));
     xhr.send(JSON.stringify(postData));
 }

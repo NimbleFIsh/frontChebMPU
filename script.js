@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openForm = () => { // Открытие формы
         if (!document.getElementById('form')) { // Если форма не была открыта ранее
             renderForm(); // Рендер формы
+            document.getElementById('openForm').remove();
 
             map.addEventListener('contextmenu', contextMenu); // Обработчик контекстного меню
 
@@ -67,12 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                 else alert('Пожалуйста заполните все поля и поставте точку на карте');
                 coords = []; // Сброс координат
+                document.getElementById('form').remove();
+                document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
+                document.getElementById('openForm').addEventListener('click', openForm); // Обработчик открытия формы
             });
         }
     }
     
     const renderSettings = () => {
-        document.body.insertAdjacentHTML('afterbegin', '<div id="container"><ul id="settings"></ul></div>'); // Рендер базовой структуры
+        document.body.insertAdjacentHTML('afterbegin', '<div id="container"></div>'); // Рендер базовой структуры
 
         sendReq('GET', 'categories', data => { // Запрос категорий
             const select = document.createElement('select');
@@ -84,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             sendReq('GET', 'points', data => console.log(data), null, 1); // Запрос категории по id
 
-            document.getElementById('settings').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
+            document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
             document.getElementById('openForm').addEventListener('click', openForm); // Обработчик открытия формы
         });
     }

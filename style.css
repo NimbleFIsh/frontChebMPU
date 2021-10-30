@@ -15,6 +15,10 @@
 
 #attention > span, #openForm, #closeForm, #sendForm { cursor: pointer }
 
+#modelList {
+    margin-bottom: 15px;
+}
+
 #container {
     position: absolute;
     width: 18vw;
@@ -25,7 +29,7 @@
     max-height: 80vh;
 }
 
-#container, #settings, #form {
+#container, #form {
     display: flex;
     flex-direction: column;
     align-items: center;

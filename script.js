@@ -15,12 +15,12 @@ const getMarkers = () => Array.from(document.getElementsByClassName('leaflet-mar
 const removeContextPin = () => getMarkers().forEach(img => img.src.includes(userMarker) && img.remove()); // Очистка метки пользователя
 const clearMarkers = () => getMarkers().forEach(el => el.remove()); // Очистка всей карты
 
-function createCategory(element, container) { // Наполняет выпадающий список категориями
+function createCategory(element) { // Наполняет выпадающий список категориями
     const option = document.createElement('option');
     option.id=element.id;
     option.innerText=element.name;
     option.dataset.color = element.color;
-    document.getElementById(container ? container : 'modeList').insertAdjacentElement('beforeend', option);
+    document.getElementById('modeList').insertAdjacentElement('beforeend', option);
 }
 
 const renderForm = () => document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="form"><div id="closeForm"></div><label for="description">Укажите тему обращения</label><textarea id="description"></textarea><label for="text">Опишите вашу проблему</label><textarea id="text"></textarea><div id="attention">Укажите на карте току, нажав правой кнопкой мыши</div><div id="sendForm">Отправить</div></div>');

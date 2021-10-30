@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const contextMenu = e => {
         removeContextPin();
         coords = e.latlng;
-        console.log(coords);
         setMarker(e.latlng, 'Ваша точка', markersParh + userMarker, [25, 40]);
         document.getElementById('attention').innerHTML = '<span id="unselectPin">Убрать маркер</span>';
         document.getElementById('unselectPin').addEventListener('click', () => {
@@ -61,11 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('sendForm').addEventListener('click', () => {
                 const description = document.getElementById('description');
                 const text = document.getElementById('text');
-                if (description.value !== '' || text.value !== '' || coords.length !== 0) alert('Пожалуйста заполните все поля и поставте точку на карте');
+                if (description.value !== '' || text.value !== '' || Object.keys(coords) > 0) alert('Пожалуйста заполните все поля и поставте точку на карте');
                 else sendReq('POST', 'createRequest', data => {
                     console.log(data);
                     if (data.id) console.log('Успешно создано!');
                 }, { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
+                coords = [];
             });
         }
     }

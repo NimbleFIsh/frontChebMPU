@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('sendForm').addEventListener('click', () => {
                 const description = document.getElementById('description');
                 const text = document.getElementById('text');
-                console.log({ "summary": description.innerText, "text": text.innerText, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
-                if (description.innerText !== '' && text.innerText !== '' && (coords.lng && coords.lat)) alert('Пожалуйста заполните все поля и поставте точку на карте');
-                else sendReq('POST', 'createRequest', data => {
-                    console.log(data);
-                    if (data.id) console.log('Успешно создано!');
-                }, { "summary": description.innerText, "text": text.innerText, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
+                console.log({ "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
+                if (description.value !== '' && text.value !== '' && (coords.lng && coords.lat)) alert('Пожалуйста заполните все поля и поставте точку на карте');
+                // else sendReq('POST', 'createRequest', data => {
+                //     console.log(data);
+                //     if (data.id) console.log('Успешно создано!');
+                // }, { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                 coords = [];
             });
         }

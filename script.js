@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const description = document.getElementById('description'); // Получение полей формы для чтения их значений
                 const text = document.getElementById('text'); // Получение полей формы для чтения их значений
 
-                if (description.value !== '' && text.value !== '' && (coords.lng && coords.lat)) // Отправка формы, только если она полностью заполнена
+                if (description.value !== '' && text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
-                else alert('Пожалуйста заполните все поля и поставте точку на карте');
-                coords = []; // Сброс координат
-                document.getElementById('openForm').classList.remove('hide'); // Показываем кнопку
+                    document.getElementById('openForm').classList.remove('hide'); // Показываем кнопку
+                    coords = []; // Сброс координат
+                } else alert('Пожалуйста заполните все поля и поставте точку на карте');
             });
         }
     }

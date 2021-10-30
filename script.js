@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map); // Задание слоя маски - обычный
     map.on('contextmenu', () => null); // Отключение стандартного контекстного меню браузера
 
-    const setMarker = (coords, content, icon=markersParh + marker, size) => L.marker(coords, {icon:L.icon({iconUrl:icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).bindPopup(content).addTo(map);
+    const setMarker = (coords, content, icon=markersParh + marker, size, callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
 
-    const contextMenu = e => { // 
+    const contextMenu = e => {
         removeContextPin(); // Удаление точки пользователя
         
         coords = e.latlng; // Дамп координат
@@ -69,12 +69,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (description.value !== '' && text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                     document.getElementById('closeForm').click(); // Закрытие формы
+                    setMarker([coords.lng, coords.lat], text.value); // Добавление маркера без запроса с сервера
                     coords = {}; // Сброс координат
                 } else alert('Пожалуйста заполните все поля и поставте точку на карте');
             });
         }
     }
-    
+    // .bindPopup(content)
+    const changeCategoryRender = data => {
+        clearMarkers(); // Очистка всех маркеров с карты
+        data.forEach(el => setMarker([el.coordinate.lon, el.coordinate.lat],null, null ));
+    }
+
     const renderSettings = () => {
         document.body.insertAdjacentHTML('afterbegin', '<div id="container"></div>'); // Рендер базовой структуры
 
@@ -86,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('container').insertAdjacentElement('afterbegin', select); // Рендер контейнера списка категорий
             data.forEach(createCategory); // Наполнение списка категорий
 
-            sendReq('GET', 'points', data => console.log(data), null, 1); // Запрос категории по id
+            sendReq('GET', 'points', changeCategoryRender, null, 1); // Запрос категории по id
 
             document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
             document.getElementById('openForm').addEventListener('click', openForm); // Добавляет обработчик открытия формы
@@ -94,6 +100,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderSettings(); // Точка входа
-    
-    setMarker([56.1012, 47.2261], 'Текст'); // Тестовый маркер
 });

@@ -60,9 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('sendForm').addEventListener('click', () => {
                 const description = document.getElementById('description');
                 const text = document.getElementById('text');
-                console.log(Object.keys(coords) > 0);
                 console.log({ "summary": description.innerText, "text": text.innerText, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
-                if (description.innerText !== '' || text.innerText !== '' || Object.keys(coords) > 0) alert('Пожалуйста заполните все поля и поставте точку на карте');
+                if (description.innerText !== '' && text.innerText !== '' && (coords.lng && coords.lat)) alert('Пожалуйста заполните все поля и поставте точку на карте');
                 else sendReq('POST', 'createRequest', data => {
                     console.log(data);
                     if (data.id) console.log('Успешно создано!');

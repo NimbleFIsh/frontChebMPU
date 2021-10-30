@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (description.value !== '' && text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
-                    document.getElementById('openForm').click(); // Закрытие формы
+                    document.getElementById('closeForm').click(); // Закрытие формы
                     coords = {}; // Сброс координат
                 } else alert('Пожалуйста заполните все поля и поставте точку на карте');
             });

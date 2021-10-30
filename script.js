@@ -5,7 +5,7 @@ const userMarker = 'pin.svg';
 
 function sendReq(method, mode, callback, postData = '', id) { // Функция для стандартного сетевого взаимодействия
     const xhr = new XMLHttpRequest();
-    xhr.open(method, SERVERHOST + mode + (mode === 'points' ? '?category=' + id : ''), true);
+    xhr.open(method, SERVERHOST + mode + (mode === 'points' ? '?category=' + id : (mode === 'requestsText') ? '/'+id : ''), true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.addEventListener('readystatechange', () => xhr.readyState === xhr.DONE && callback(mode === 'requestsText' ? xhr.response : JSON.parse(xhr.response)));
     xhr.send(JSON.stringify(postData));
@@ -75,10 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-    // .bindPopup(content)
     const changeCategoryRender = data => {
         clearMarkers(); // Очистка всех маркеров с карты
-        data.forEach(el => setMarker([el.coordinate.lat, el.coordinate.lon], undefined, undefined));
+        data.forEach(el => setMarker([el.coordinate.lat, el.coordinate.lon], undefined, undefined, e =>
+            sendReq('GET', 'requestsText', d => e.bindPopup(d), undefined, el.id)));
     }
 
     const renderSettings = () => {

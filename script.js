@@ -61,11 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('sendForm').addEventListener('click', () => {
                 const description = document.getElementById('description');
                 const text = document.getElementById('text');
-                if (description.value == '' || text.value == '' || coords.length !== 0) alert('Пожалуйста заполните все поля и поставте точку на карте');
+                if (description.value !== '' || text.value !== '' || coords.length !== 0) alert('Пожалуйста заполните все поля и поставте точку на карте');
                 else sendReq('POST', 'createRequest', data => {
                     console.log(data);
                     if (data.id) console.log('Успешно создано!');
-                }, { "summary": description.value, "text": text.value, "coordinate": { "lon": coords[0], "lat": coords[1] } });
+                }, { "summary": description.value, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
             });
         }
     }

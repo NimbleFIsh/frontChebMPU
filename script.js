@@ -79,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": selectDump, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                     document.getElementById('closeForm').click(); // Закрытие формы
+                    console.log(selectDump);
+                    console.log(document.getElementById('modeList').selectedOptions[0].value);
                     if (document.getElementById('modeList').selectedOptions[0].value === selectDump) setMarker([coords.lat, coords.lng], undefined, undefined, e => e.target.bindPopup(text.value)); // Добавление маркера без запроса с сервера
                     coords = {}; // Сброс координат
                 } else alert('Пожалуйста заполните все поля и поставте точку на карте');

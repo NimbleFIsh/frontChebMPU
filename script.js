@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sendReq('GET', 'categories', data => { // Запрос категорий
             const select = document.createElement('select');
             select.id="modeList";
-            select.addEventListener('change', e => sendReq('GET', 'points', data => console.log(data), null, e.target.selectedOptions[0].id));
+            select.addEventListener('change', e => sendReq('GET', 'points', changeCategoryRender, null, e.target.selectedOptions[0].id));
 
             document.getElementById('container').insertAdjacentElement('afterbegin', select); // Рендер контейнера списка категорий
             data.forEach(createCategory); // Наполнение списка категорий

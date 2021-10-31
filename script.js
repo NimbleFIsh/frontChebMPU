@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             select.addEventListener('change', e => sendReq('GET', 'points', data => changeCategoryRender(data, e.target.selectedOptions[0].id), null, e.target.selectedOptions[0].id));
 
             document.getElementById('container').insertAdjacentElement('afterbegin', select); // Рендер контейнера списка категорий
+            document.getElementById('modeList').insertAdjacentHTML('afterbegin', '<option id="0">Все</option>');
             data.forEach(createCategory); // Наполнение списка категорий
 
             sendReq('GET', 'points', data => changeCategoryRender(data, dataDump[0].id), null, dataDump[0].id); // Запрос категории по id

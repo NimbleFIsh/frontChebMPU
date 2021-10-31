@@ -66,6 +66,6 @@ textarea:focus { outline: none }
 #closeForm {
     width: 20px;
     height: 20px;
-    background-image: url('close.png');
+    background-image: url('./img/close.png');
     background-size: 20px;
 }

@@ -1,7 +1,18 @@
-const SERVERHOST = 'https://cheb.typex.one/api/v1/';
-const markersParh = './';
-const marker = 'marker.png';
-const userMarker = 'pin.svg';
+const SERVERHOST  = 'https://cheb.typex.one/api/v1/';
+const markersParh = './img/';
+const infra       = 'infra.png';
+const roads       = 'roads.png';
+const eco         = 'eco.png';
+const social      = 'social.png';
+const business    = 'business.png';
+const phone       = 'telephone.png';
+const covid       = 'virus.png';
+const earth       = 'earth_work.png';
+const marker      = 'marker.png';
+const userMarker  = 'pin.svg';
+
+let links = {}, // Объект для связи категорий и маркеров
+    markers = [ infra, roads, eco, social, business, phone, covid, earth, marker ]; // Массив последовательности для связи с категориями
 
 function sendReq(method, mode, callback, postData = '', id) { // Функция для стандартного сетевого взаимодействия
     const xhr = new XMLHttpRequest();
@@ -60,8 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.dataset.color = el.color;
                 document.getElementById('selectForm').insertAdjacentElement('beforeend', option);
             });
-            document.getElementById('selectForm').addEventListener('change', e => selectDump = e.target.selectedOptions[0].value);
-            selectDump = dataDump[0].name;
+            document.getElementById('selectForm').addEventListener('change', e => selectDump = { 'name': e.target.selectedOptions[0].value, 'id': e.target.selectedOptions[0].id });
+            selectDump = { 'name': dataDump[0].name, 'id': dataDump[0].id };
             document.getElementById('openForm').classList.add('hide'); // Прячем кнопку
 
             map.addEventListener('contextmenu', contextMenu); // Обработчик контекстного меню
@@ -77,17 +88,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const text = document.getElementById('text'); // Получение полей формы для чтения их значений
 
                 if (text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
-                    sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": selectDump, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
+                    sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": selectDump.name, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                     document.getElementById('closeForm').click(); // Закрытие формы
-                    if (document.getElementById('modeList').selectedOptions[0].value === selectDump) setMarker([coords.lat, coords.lng], undefined, undefined, e => e.target.bindPopup(text.value)); // Добавление маркера без запроса с сервера
+                    if (document.getElementById('modeList').selectedOptions[0].value === selectDump.name) setMarker([coords.lat, coords.lng], links[selectDump.id], undefined, e => e.target.bindPopup(text.value)); // Добавление маркера без запроса с сервера
                     coords = {}; // Сброс координат
                 } else alert('Пожалуйста заполните все поля и поставте точку на карте');
             });
         }
     }
-    const changeCategoryRender = data => {
+    const changeCategoryRender = (data, catID) => {
         clearMarkers(); // Очистка всех маркеров с карты
-        data.forEach(el => setMarker([el.coordinate.lat, el.coordinate.lon], undefined, undefined, e =>
+        data.forEach(el => setMarker([el.coordinate.lat, el.coordinate.lon], links[catID], undefined, e =>
             sendReq('GET', 'requestsText', d => e.target.bindPopup(d).openPopup(), undefined, el.requestId)));
     }
 
@@ -96,14 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sendReq('GET', 'categories', data => { // Запрос категорий
             dataDump = data;
+            dataDump.forEach((category, i) => links[category.id] = markers[i]); // Установка связи категорий и маркеров
+            console.log(links);
             const select = document.createElement('select');
             select.id="modeList";
-            select.addEventListener('change', e => sendReq('GET', 'points', changeCategoryRender, null, e.target.selectedOptions[0].id));
+            select.addEventListener('change', e => sendReq('GET', 'points', data => changeCategoryRender(data, e.target.selectedOptions[0].id), null, e.target.selectedOptions[0].id));
 
             document.getElementById('container').insertAdjacentElement('afterbegin', select); // Рендер контейнера списка категорий
             data.forEach(createCategory); // Наполнение списка категорий
 
-            sendReq('GET', 'points', changeCategoryRender, null, dataDump[0].id); // Запрос категории по id
+            sendReq('GET', 'points', data => changeCategoryRender(data, dataDump[0].id), null, dataDump[0].id); // Запрос категории по id
 
             document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
             document.getElementById('openForm').addEventListener('click', openForm); // Добавляет обработчик открытия формы

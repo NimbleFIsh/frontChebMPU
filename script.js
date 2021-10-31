@@ -111,7 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
             dataDump.forEach((category, i) => links[category.id] = markers[i]); // Установка связи категорий и маркеров
             const select = document.createElement('select');
             select.id="modeList";
-            select.addEventListener('change', e => sendReq('GET', 'points', d => changeCategoryRender(d, e.target.selectedOptions[0].id), null, e.target.selectedOptions[0].id));
+            select.addEventListener('change', e => {
+                if (e.target.selectedOptions[0].id === 0) dataDump.forEach(el => sendReq('GET', 'points', d => changeCategoryRender(d, el.id, false), null, el.id)) // Запрос категории по id
+                else sendReq('GET', 'points', d => changeCategoryRender(d, e.target.selectedOptions[0].id), null, e.target.selectedOptions[0].id);
+            });
 
             document.getElementById('container').insertAdjacentElement('afterbegin', select); // Рендер контейнера списка категорий
             document.getElementById('modeList').insertAdjacentHTML('afterbegin', '<option id="0">Все</option>');

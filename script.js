@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-    const changeCategoryRender = (data, catID) => {
-        clearMarkers(); // Очистка всех маркеров с карты
+    const changeCategoryRender = (data, catID, mode = true) => {
+        if (mode) clearMarkers(); // Очистка всех маркеров с карты
         data.forEach(el => setMarker([el.coordinate.lat, el.coordinate.lon], links[catID], undefined, e =>
             sendReq('GET', 'requestsText', d => e.target.bindPopup(d).openPopup(), undefined, el.requestId)));
     }
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modeList').insertAdjacentHTML('afterbegin', '<option id="0">Все</option>');
             data.forEach(createCategory); // Наполнение списка категорий
 
-            dataDump.forEach(el => sendReq('GET', 'points', d => changeCategoryRender(d, el.id), null, el.id)) // Запрос категории по id
+            dataDump.forEach(el => sendReq('GET', 'points', d => changeCategoryRender(d, el.id), null, el.id, false)) // Запрос категории по id
             document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
             document.getElementById('openForm').addEventListener('click', openForm); // Добавляет обработчик открытия формы
         });

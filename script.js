@@ -12,7 +12,7 @@ const marker      = 'marker.png';
 const userMarker  = 'pin.svg';
 
 let links = {}, // Объект для связи категорий и маркеров
-    markers = [ infra, roads, eco, social, business, phone, covid, earth, marker ]; // Массив последовательности для связи с категориями
+    markers = [ infra, roads, eco, social, business, phone, earth, covid, marker ]; // Массив последовательности для связи с категориями
 
 function sendReq(method, mode, callback, postData = '', id) { // Функция для стандартного сетевого взаимодействия
     const xhr = new XMLHttpRequest();
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map); // Задание слоя маски - обычный
     map.on('contextmenu', () => null); // Отключение стандартного контекстного меню браузера
 
-    const setMarker = (coords, icon=marker, size=[20, 40], callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:markersParh + icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
+    const setMarker = (coords, icon=marker, size=[30, 30], callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:markersParh + icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
 
     const contextMenu = e => {
         removeContextPin(); // Удаление точки пользователя

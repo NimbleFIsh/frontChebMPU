@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map); // Задание слоя маски - обычный
     map.on('contextmenu', () => null); // Отключение стандартного контекстного меню браузера
 
-    const setMarker = (coords, icon=marker, size, callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:markersParh + icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
+    const setMarker = (coords, icon=marker, size=[20, 40], callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:markersParh + icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
 
     const contextMenu = e => {
         removeContextPin(); // Удаление точки пользователя

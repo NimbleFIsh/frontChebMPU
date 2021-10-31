@@ -3,6 +3,7 @@ const markersParh = './img/';
 const infra       = 'infra.png';
 const roads       = 'roads.png';
 const eco         = 'eco.png';
+const home      = 'home.png';
 const social      = 'social.png';
 const business    = 'business.png';
 const phone       = 'telephone.png';
@@ -12,7 +13,7 @@ const marker      = 'marker.png';
 const userMarker  = 'pin.svg';
 
 let links = {}, // Объект для связи категорий и маркеров
-    markers = [ infra, roads, eco, social, business, phone, earth, covid, marker ]; // Массив последовательности для связи с категориями
+    markers = [ infra, roads, eco, home, social, business, phone, covid, earth, marker ]; // Массив последовательности для связи с категориями
 
 function sendReq(method, mode, callback, postData = '', id) { // Функция для стандартного сетевого взаимодействия
     const xhr = new XMLHttpRequest();

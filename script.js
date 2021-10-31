@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map); // Задание слоя маски - обычный
     map.on('contextmenu', () => null); // Отключение стандартного контекстного меню браузера
 
-    const setMarker = (coords, icon=marker, size=[30, 30], callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:markersParh + icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
+    const setMarker = (coords, icon=marker, size=[20, 20], callback = console.log) => L.marker(coords, {icon:L.icon({iconUrl:markersParh + icon,iconSize:size,iconAnchor:[5,35],popupAnchor:[0,-40]})}).addEventListener('click', callback).addTo(map);
 
     const contextMenu = e => {
         removeContextPin(); // Удаление точки пользователя
@@ -108,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sendReq('GET', 'categories', data => { // Запрос категорий
             dataDump = data;
             dataDump.forEach((category, i) => links[category.id] = markers[i]); // Установка связи категорий и маркеров
-            console.log(links);
             const select = document.createElement('select');
             select.id="modeList";
             select.addEventListener('change', e => sendReq('GET', 'points', data => changeCategoryRender(data, e.target.selectedOptions[0].id), null, e.target.selectedOptions[0].id));

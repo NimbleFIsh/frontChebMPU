@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('attention').innerHTML = '<span id="unselectPin">Убрать маркер</span>'; // Рендер отмены выбора точки
         document.getElementById('unselectPin').addEventListener('click', () => { // Обработчик отмены выбора точки
             removeContextPin(); // Удаление точки пользователя
-            document.getElementById('attention').innerText = 'Укажите на карте току, нажав правой кнопкой мыши';
+            document.getElementById('attention').innerText = 'Укажите на карте точку, нажав правой кнопкой мыши';
         });
     }
 
@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (text.value !== '' && (coords.lng && coords.lat)) { // Отправка формы, только если она полностью заполнена
                     sendReq('POST', 'createRequest', () => alert('Успешно создано!'), { "summary": selectDump.name, "text": text.value, "coordinate": { "lon": coords.lng, "lat": coords.lat } });
                     document.getElementById('closeForm').click(); // Закрытие формы
-                    console.log(document.getElementById('modeList').selectedOptions[0].id);
-                    if (document.getElementById('modeList').selectedOptions[0].value === selectDump.name || document.getElementById('modeList').selectedOptions[0].id === 0) setMarker([coords.lat, coords.lng], links[selectDump.id], undefined, e => e.target.bindPopup(text.value)); // Добавление маркера без запроса с сервера
+                    console.log(document.getElementById('modeList').selectedOptions[0].value === selectDump.name || document.getElementById('modeList').selectedOptions[0].id == 0);
+                    if (document.getElementById('modeList').selectedOptions[0].value === selectDump.name || document.getElementById('modeList').selectedOptions[0].id == 0) setMarker([coords.lat, coords.lng], links[selectDump.id], undefined, e => e.target.bindPopup(text.value)); // Добавление маркера без запроса с сервера
                     coords = {}; // Сброс координат
                 } else alert('Пожалуйста заполните все поля и поставте точку на карте');
             });

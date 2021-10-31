@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modeList').insertAdjacentHTML('afterbegin', '<option id="0">Все</option>');
             data.forEach(createCategory); // Наполнение списка категорий
 
-            dataDump.forEach(el => sendReq('GET', 'points', d => changeCategoryRender(d, el.id), null, el.id, false)) // Запрос категории по id
+            dataDump.forEach(el => sendReq('GET', 'points', d => changeCategoryRender(d, el.id, false), null, el.id)) // Запрос категории по id
             document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
             document.getElementById('openForm').addEventListener('click', openForm); // Добавляет обработчик открытия формы
         });

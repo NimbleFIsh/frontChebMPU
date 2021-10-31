@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const select = document.createElement('select');
             select.id="modeList";
             select.addEventListener('change', e => {
+                console.log(categories);
                 if (e.target.selectedOptions[0].id == 0) categories.forEach(el => sendReq('GET', 'points', d => changeCategoryRender(d, el.id, false), null, el.id)) // Запрос категории по id
                 else sendReq('GET', 'points', d => changeCategoryRender(d, e.target.selectedOptions[0].id), null, e.target.selectedOptions[0].id);
             });

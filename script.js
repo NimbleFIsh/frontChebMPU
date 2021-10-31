@@ -111,14 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
             dataDump.forEach((category, i) => links[category.id] = markers[i]); // Установка связи категорий и маркеров
             const select = document.createElement('select');
             select.id="modeList";
-            select.addEventListener('change', e => sendReq('GET', 'points', data => changeCategoryRender(data, e.target.selectedOptions[0].id), null, e.target.selectedOptions[0].id));
+            select.addEventListener('change', e => sendReq('GET', 'points', d => changeCategoryRender(d, e.target.selectedOptions[0].id), null, e.target.selectedOptions[0].id));
 
             document.getElementById('container').insertAdjacentElement('afterbegin', select); // Рендер контейнера списка категорий
             document.getElementById('modeList').insertAdjacentHTML('afterbegin', '<option id="0">Все</option>');
             data.forEach(createCategory); // Наполнение списка категорий
 
-            sendReq('GET', 'points', data => changeCategoryRender(data, dataDump[0].id), null, dataDump[0].id); // Запрос категории по id
-
+            dataDump.forEach(el => sendReq('GET', 'points', d => changeCategoryRender(d, el.id), null, el.id)) // Запрос категории по id
             document.getElementById('container').insertAdjacentHTML('beforeend', '<div id="openForm">Отправить запрос</div>'); // Рендер кнопки открытия формы
             document.getElementById('openForm').addEventListener('click', openForm); // Добавляет обработчик открытия формы
         });
